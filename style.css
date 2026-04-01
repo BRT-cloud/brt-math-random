@@ -1,0 +1,546 @@
+:root {
+  --primary: #FFA6C9; /* 파스텔 핑크 */
+  --primary-hover: #FF8BAE;
+  --bg: #E6F7FF; /* 파스텔 블루 (구름 하늘) */
+  --panel-bg: #FFFFFF;
+  --text-main: #4A4A4A; /* 부드러운 먹색 */
+  --text-sub: #8B8B8B;
+  --border: #BEE3F8; /* 몽글몽글 구름 파랑 */
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.05); /* 부드럽게 퍼지는 그림자 */
+  
+  /* 파스텔 자릿수 색상 */
+  --color-hun: #81C784; /* 파스텔 초록 */
+  --color-ten: #FF8A65; /* 파스텔 주황빨강 */
+  --color-one: #64B5F6; /* 파스텔 파랑 */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Jua', sans-serif;
+  background-color: var(--bg);
+  /* 은은한 솜사탕/구름 빛 배경 연출 */
+  background-image: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+                    radial-gradient(circle at 85% 75%, rgba(255, 255, 255, 0.6) 0%, transparent 40%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  line-height: 1.5;
+  font-size: 18px;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Left Panel */
+.controls-panel {
+  width: 320px;
+  background: var(--panel-bg);
+  border-radius: 0 30px 30px 0; /* 우측만 몽글하게 둥글림 */
+  padding: 30px 24px;
+  overflow-y: auto;
+  box-shadow: 4px 0 25px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
+
+.controls-panel h1 {
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  color: #7CB342; /* 산뜻한 파스텔 연두 */
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-group label {
+  font-size: 16px;
+  color: var(--text-main);
+}
+
+.control-group select,
+.control-group input[type="number"] {
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 20px; /* 아주 둥글게 */
+  font-size: 16px;
+  outline: none;
+  font-family: 'Jua', sans-serif;
+  background-color: #FAFAFA;
+  transition: all 0.2s;
+}
+
+.control-group select:focus,
+.control-group input[type="number"]:focus {
+  border-color: var(--primary);
+  background-color: white;
+  box-shadow: 0 0 10px rgba(255, 166, 201, 0.3);
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.layout-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #FFFBE6; /* 파스텔 크림색 */
+  padding: 15px;
+  border-radius: 20px;
+  border: 2px dashed #FFE082;
+}
+
+.layout-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.action-buttons {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+}
+
+button {
+  padding: 15px;
+  border: none;
+  border-radius: 20px; /* 완전 둥글게 */
+  font-size: 18px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: white;
+  font-size: 20px;
+}
+
+.primary-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.05); /* 마우스 올렸을 때 커지는 몽글몽글 효과 */
+  box-shadow: 0 8px 15px rgba(255, 166, 201, 0.4);
+}
+
+.export-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.secondary-btn {
+  flex: 1;
+  background: #FFFACD; /* 파스텔 옐로우 */
+  color: #B58900;
+  padding: 12px 5px;
+  font-size: 16px;
+}
+
+.secondary-btn:hover {
+  background: #FFEDA0;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(255, 237, 160, 0.5);
+}
+
+#saveAnsBtn {
+  background: #E6F7FF;
+  color: #0284C7;
+}
+
+#saveAnsBtn:hover {
+  background: #BAE6FD;
+}
+
+#printBtn {
+  background: #F3E8FF; /* 파스텔 보라 */
+  color: #7E22CE;
+}
+
+#printBtn:hover {
+  background: #E9D5FF;
+}
+
+/* Right Panel (Worksheet) */
+.worksheet-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* 구름 느낌의 둥근 A4 종이 테두리 */
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: var(--card-shadow);
+  border-radius: 30px; /* 둥근 종이 */
+  border: 4px dashed var(--border); /* 점선 몽글몽글 */
+  padding: 12mm 14mm;
+  box-sizing: border-box;
+  position: relative;
+  flex-shrink: 0;
+  height: max-content;
+}
+
+.worksheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 3px dashed var(--primary); /* 테마 통일 */
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+}
+
+.worksheet-title,
+.worksheet-header h2 {
+  font-size: 24px;
+  color: var(--primary-hover);
+  margin: 0;
+  flex: 1;
+  word-break: keep-all;
+  padding-right: 15px;
+}
+
+.student-info {
+  font-size: 16px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.student-info span.line {
+  display: inline-block;
+  width: 100px;
+  border-bottom: 2px solid var(--border);
+  margin: 0 20px 0 8px;
+  position: relative;
+  top: -6px;
+}
+
+.student-info span.line:last-child {
+  margin-right: 0;
+}
+
+.problems-container {
+  display: grid;
+  gap: 14px 14px;
+  width: 100%;
+}
+
+.layout-1-col {
+  grid-template-columns: 1fr;
+}
+
+.layout-2-col {
+  grid-template-columns: 1fr 1fr;
+}
+
+.problem-item {
+  display: flex;
+  font-size: 20px;
+  align-items: flex-start;
+  min-width: 0;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* 문제 번호 뱃지 */
+.problem-no {
+  min-width: 32px;
+  height: 32px;
+  background: var(--primary); /* 핑크 동그라미 */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-top: 2px; /* 수직 정렬 보정 */
+  box-shadow: 0 4px 8px rgba(255, 166, 201, 0.4);
+}
+
+/* Visual Support / Color Guide */
+.visual-support .num-hundreds { color: var(--color-hun); }
+.visual-support .num-tens { color: var(--color-ten); }
+.visual-support .num-ones { color: var(--color-one); }
+
+/* 핵심: 문제 사이의 풀이 여백 구역 */
+.problem-expression {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Story Mode Styles */
+.story-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  width: 100%;
+}
+
+.story-icon {
+  font-size: 22px;
+  background: #FFFBE6;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 36px;
+  height: 36px;
+}
+
+.story-text {
+  font-size: 16px;
+  line-height: 1.5;
+  flex: 1;
+  min-width: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.story-text strong {
+  color: var(--primary-hover);
+  background: rgba(255, 166, 201, 0.15);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* 모눈종이 무늬 배경 적용 */
+.calc-space {
+  height: 70px;
+  margin-top: 8px;
+  background-color: #ffffff;
+  background-image: 
+    linear-gradient(#f0f0f0 1px, transparent 1px),
+    linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+  background-size: 15px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  width: 100%;
+}
+
+/* 문장제 공책 (노트) 가로줄 배경 */
+.calc-space.lined {
+  background-color: #fdfdfd;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 24px,
+    #D0E5F5 24px,
+    #D0E5F5 25px
+  );
+  border: 2px dashed #D0E5F5;
+  border-radius: 8px;
+}
+
+.answers-container {
+  display: grid;
+  gap: 10px;
+  font-size: 18px;
+  color: var(--text-main);
+  padding: 10px;
+}
+
+.answer-item {
+  background: #FFFBE6;
+  padding: 10px 15px;
+  border-radius: 15px;
+  border: 1px dashed #FFE082;
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 5mm;
+  }
+  
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 14px;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .app-container {
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .worksheet-wrapper {
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    display: block;
+    gap: 0;
+  }
+
+  .a4-page {
+    width: 200mm;
+    height: 287mm;
+    max-height: 287mm;
+    min-height: auto;
+    box-shadow: none;
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 8mm 10mm;
+    margin: 0 auto;
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  .worksheet-header {
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    border-bottom-width: 2px;
+  }
+
+  .worksheet-title,
+  .worksheet-header h2 {
+    font-size: 20px;
+  }
+
+  .student-info {
+    font-size: 13px;
+  }
+
+  .student-info span.line {
+    width: 70px;
+    margin: 0 12px 0 5px;
+  }
+
+  .problems-container {
+    gap: 10px 10px;
+  }
+
+  .problem-item {
+    font-size: 16px;
+  }
+
+  .problem-no {
+    min-width: 26px;
+    height: 26px;
+    font-size: 13px;
+    margin-right: 8px;
+    margin-top: 1px;
+  }
+
+  .story-icon {
+    font-size: 18px;
+    min-width: 30px;
+    height: 30px;
+    padding: 4px;
+  }
+
+  .story-text {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .story-wrapper {
+    gap: 8px;
+  }
+
+  .calc-space {
+    height: 50px;
+    margin-top: 5px;
+    background-size: 12px 12px;
+    border-radius: 6px;
+  }
+
+  .calc-space.lined {
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 18px,
+      #D0E5F5 18px,
+      #D0E5F5 19px
+    );
+    border-radius: 6px;
+  }
+
+  .answers-container {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .answer-item {
+    padding: 6px 10px;
+    border-radius: 10px;
+  }
+}
+
+/* Footer */
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(230, 247, 255, 0.95));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 2px dashed var(--border);
+  padding: 12px 24px;
+  text-align: center;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.footer-credit {
+  margin: 0;
+  font-size: 16px;
+  color: var(--primary-hover);
+  letter-spacing: 0.5px;
+}
+
+.footer-highlight {
+  font-size: 18px;
+  color: #7CB342;
+  background: linear-gradient(135deg, #E8F5E9, #FFFDE7);
+  padding: 2px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(124, 179, 66, 0.2);
+}
+
+.footer-notice {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 0.3px;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>수학 학습지 자동 생성기</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- 좌측 컨트롤 패널 -->
+    <aside class="controls-panel no-print">
+      <h1>🧮 수학 학습지 생성기</h1>
+      
+
+      <div class="control-group" style="margin-top: 5px;">
+        <label for="category"><strong>문제 유형 (대분류)</strong></label>
+        <select id="category"></select>
+      </div>
+
+      <div class="control-group">
+        <label for="subCategory"><strong>세부 선택 (소분류)</strong></label>
+        <select id="subCategory"></select>
+      </div>
+
+      <div class="control-group checkbox-group" id="carryOverGroup" style="display: none;">
+        <label>
+          <input type="checkbox" id="allowCarryOver" checked>
+          받아올림/내림 허용
+        </label>
+      </div>
+
+      <div class="control-group">
+        <label><strong>학습지 레이아웃 배치</strong></label>
+        <div class="layout-options">
+          <label>
+            <input type="radio" name="layout" value="1-col" checked>
+            1단 (풀이공간 아주 넓음)
+          </label>
+          <label>
+            <input type="radio" name="layout" value="2-col">
+            2단 (풀이공간 보통)
+          </label>
+        </div>
+      </div>
+
+      <div class="control-group checkbox-group visual-support-group" style="margin-top: 10px; margin-bottom: 5px; padding: 15px; background: #FFFBE6; border-radius: 20px; border: 2px dashed #FFD1DC; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+        <label style="color: #FF8BAE; font-weight: 600; font-size: 18px;">
+          <input type="checkbox" id="colorGuideCheck">
+          🎨 자릿수 색상 가이드
+        </label>
+        <span style="font-size: 14px; color: #BEE3F8; margin-left: 24px; display: block; margin-top: 4px; color: #8BC34A;">아이들의 자릿수 이해를 도와요!</span>
+      </div>
+
+      <div class="action-buttons">
+        <button id="generateBtn" class="primary-btn">새 문제 생성하기</button>
+        <div class="export-buttons">
+          <button id="saveImgBtn" class="secondary-btn">🖼️ 학습지 캡처</button>
+          <button id="saveAnsBtn" class="secondary-btn" style="border-color: var(--primary); color: var(--primary);">📝 정답지 캡처</button>
+          <button id="printBtn" class="secondary-btn">🖨️ 인쇄하기</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 우측 미리보기 (학습지 실제 영역) -->
+    <main class="worksheet-wrapper">
+      <div class="worksheet a4-page" id="worksheet">
+        <div class="worksheet-header">
+          <div class="worksheet-title" id="worksheetTitle">수학 학습지</div>
+          <div class="student-info">
+            <span>학년 / 반:</span> <span class="line"></span>
+            <span>이름:</span> <span class="line"></span>
+          </div>
+        </div>
+        <div class="problems-container layout-1-col" id="problemsContainer">
+          <!-- JS에서 동적 렌더링 -->
+        </div>
+      </div>
+
+      <!-- 정답지 영역 -->
+      <div class="worksheet a4-page" id="answerSheet" style="margin-top: 40px;">
+        <div class="worksheet-header">
+          <div class="worksheet-title" id="answerSheetTitle">정답지</div>
+        </div>
+        <div class="answers-container layout-2-col" id="answersContainer">
+          <!-- JS에서 정답 동적 렌더링 -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer no-print">
+    <p class="footer-credit">Made by <span class="footer-highlight">배래쌤</span> 🍎</p>
+    <p class="footer-notice">⚠️ 본 사이트의 콘텐츠는 저작권법에 의해 보호됩니다. 무단 복제·배포·수정을 금지합니다.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
