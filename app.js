@@ -17,6 +17,8 @@ const categoriesData = {
   ],
   mul_div: [
     { value: 'mul_1', label: '구구단 (한 자리 곱셈)' },
+    { value: 'mul_2x1', label: '두 자리 수 × 한 자리 수' },
+    { value: 'mul_3x1', label: '세 자리 수 × 한 자리 수' },
     { value: 'mul_2', label: '두 자리 수 곱셈' },
     { value: 'div_1', label: '나눗셈 기초 (나머지 없음)' },
     { value: 'div_2', label: '두 자리 수 나눗셈' }
@@ -61,7 +63,8 @@ const answerSheetTitle = document.getElementById('answerSheetTitle');
 const generateBtn = document.getElementById('generateBtn');
 const saveImgBtn = document.getElementById('saveImgBtn');
 const saveAnsBtn = document.getElementById('saveAnsBtn');
-const printBtn = document.getElementById('printBtn');
+const printWorksheetBtn = document.getElementById('printWorksheetBtn');
+const printAllBtn = document.getElementById('printAllBtn');
 
 // Story Elements
 const storyNames = ["지우", "민수", "서윤", "도윤", "하준", "수아", "유빈", "은우", "건우", "시아", "아인", "연우"];
@@ -392,6 +395,7 @@ function generateMathProblems() {
     // SIMPLE CALCULATION MODE
     let expression = "";
     let answer = "";
+    let solutionData = null;
     
     if (category === 'basic') {
       if (subCategory === 'compare') {
@@ -435,6 +439,7 @@ function generateMathProblems() {
         }
         expression = `${formatNum(a)} + ${formatNum(b)} = `;
         answer = a + b;
+        solutionData = { a, b, op: '+', ans: a + b };
       } else {
         if (!allowCarry) {
           let a_str = ""; let b_str = "";
@@ -450,6 +455,7 @@ function generateMathProblems() {
         }
         expression = `${formatNum(a)} - ${formatNum(b)} = `;
         answer = a - b;
+        solutionData = { a, b, op: '-', ans: a - b };
       }
     }
     else if (category === 'mul_div') {
@@ -457,20 +463,34 @@ function generateMathProblems() {
         let a = rand(2, 9), b = rand(2, 9);
         expression = `${formatNum(a)} &times; ${formatNum(b)} = `;
         answer = a * b;
+        solutionData = { a, b, op: '×', ans: a * b };
+      } else if (subCategory === 'mul_2x1') {
+        let a = rand(10, 99), b = rand(2, 9);
+        expression = `${formatNum(a)} &times; ${formatNum(b)} = `;
+        answer = a * b;
+        solutionData = { a, b, op: '×', ans: a * b };
+      } else if (subCategory === 'mul_3x1') {
+        let a = rand(100, 999), b = rand(2, 9);
+        expression = `${formatNum(a)} &times; ${formatNum(b)} = `;
+        answer = a * b;
+        solutionData = { a, b, op: '×', ans: a * b };
       } else if (subCategory === 'mul_2') {
         let a = rand(10, 99), b = rand(2, 99);
         expression = `${formatNum(a)} &times; ${formatNum(b)} = `;
         answer = a * b;
+        solutionData = { a, b, op: '×', ans: a * b };
       } else if (subCategory === 'div_1') {
         let b = rand(2, 9);
         let a = b * rand(2, 9);
         expression = `${formatNum(a)} &divide; ${formatNum(b)} = `;
         answer = a / b;
+        solutionData = { a, b: b, op: '÷', ans: a / b };
       } else if (subCategory === 'div_2') {
         let b = rand(10, 50);
         let a = b * rand(3, 15);
         expression = `${formatNum(a)} &divide; ${formatNum(b)} = `;
         answer = a / b;
+        solutionData = { a, b: b, op: '÷', ans: a / b };
       }
     }
     else if (category === 'frac_dec') {
@@ -556,7 +576,7 @@ function generateMathProblems() {
        }
     }
 
-    problems.push({ expr: expression, ans: answer });
+    problems.push({ expr: expression, ans: answer, solution: solutionData });
   }
   
   // Render Problems
@@ -591,10 +611,24 @@ function generateMathProblems() {
     item.appendChild(exprBox);
     problemsContainer.appendChild(item);
 
-    // Answer Item
+    // Answer Item with solution process
     const ansItem = document.createElement('div');
     ansItem.className = 'answer-item';
-    ansItem.innerHTML = `${idx + 1}번 : ${prob.ans}`;
+    if (prob.solution) {
+      const { a, b, op, ans } = prob.solution;
+      ansItem.innerHTML = `
+        <div class="ans-no-badge">${idx + 1}</div>
+        <div class="vert-calc">
+          <div class="vc-row">${a}</div>
+          <div class="vc-row vc-op-row">${op} ${b}</div>
+          <div class="vc-line"></div>
+          <div class="vc-row vc-result">${ans}</div>
+        </div>`;
+    } else {
+      ansItem.innerHTML = `
+        <div class="ans-no-badge">${idx + 1}</div>
+        <div class="ans-simple">답: ${prob.ans}</div>`;
+    }
     answersContainer.appendChild(ansItem);
   });
 }
@@ -602,7 +636,16 @@ function generateMathProblems() {
 // Attach Generate & Export
 generateBtn.addEventListener('click', generateMathProblems);
 
-printBtn.addEventListener('click', () => { window.print(); });
+printWorksheetBtn.addEventListener('click', () => {
+  document.body.classList.add('print-worksheet-only');
+  window.print();
+  document.body.classList.remove('print-worksheet-only');
+});
+
+printAllBtn.addEventListener('click', () => {
+  document.body.classList.remove('print-worksheet-only');
+  window.print();
+});
 
 saveImgBtn.addEventListener('click', () => {
   captureElement('worksheet', `수학_학습지_${new Date().getTime()}.png`);

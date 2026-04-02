@@ -59,7 +59,8 @@
         <div class="export-buttons">
           <button id="saveImgBtn" class="secondary-btn">🖼️ 학습지 캡처</button>
           <button id="saveAnsBtn" class="secondary-btn" style="border-color: var(--primary); color: var(--primary);">📝 정답지 캡처</button>
-          <button id="printBtn" class="secondary-btn">🖨️ 인쇄하기</button>
+          <button id="printWorksheetBtn" class="secondary-btn print-btn-ws">🖨️ 학습지 인쇄</button>
+          <button id="printAllBtn" class="secondary-btn print-btn-all">🖨️ 학습지 + 정답지 인쇄</button>
         </div>
       </div>
 
@@ -79,6 +80,20 @@
             <span>이름:</span> <span class="line"></span>
           </div>
         </div>
+        <div class="math-deco-strip">
+          <span class="deco-emoji">✏️</span>
+          <span class="deco-emoji">📐</span>
+          <span class="deco-emoji">➕</span>
+          <span class="deco-emoji">✖️</span>
+          <span class="deco-emoji">🌟</span>
+          <span class="deco-emoji">📏</span>
+          <span class="deco-emoji">💯</span>
+        </div>
+        <img src="math_decorations.png" class="worksheet-cute-img" alt="수학 일러스트">
+        <span class="corner-deco corner-tl">🌈</span>
+        <span class="corner-deco corner-tr">⭐</span>
+        <span class="corner-deco corner-bl">🎨</span>
+        <span class="corner-deco corner-br">✨</span>
         <div class="problems-container layout-1-col" id="problemsContainer">
           <!-- JS에서 동적 렌더링 -->
         </div>
@@ -89,7 +104,7 @@
         <div class="worksheet-header">
           <div class="worksheet-title" id="answerSheetTitle">정답지</div>
         </div>
-        <div class="answers-container layout-2-col" id="answersContainer">
+        <div class="answers-container answers-grid" id="answersContainer">
           <!-- JS에서 정답 동적 렌더링 -->
         </div>
       </div>
