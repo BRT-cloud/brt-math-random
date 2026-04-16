@@ -1,0 +1,191 @@
+﻿/* =========================================
+   STORY PROBLEM GENERATOR (NEW 8 DOMAINS)
+========================================= */
+function generateStoryProblem(type) {
+    if (type === 'story_all') {
+        const types = ['story_addsub', 'story_mul', 'story_div', 'story_time', 'story_weight', 'story_len', 'story_mixed', 'story_conv'];
+        type = types[rand(0, types.length - 1)];
+    }
+    
+    let name = storyNames[rand(0, storyNames.length - 1)];
+    let story = "";
+    let answer = "";
+    let icon = "";
+    
+    switch(type) {
+        case 'story_addsub': {
+            let op = rand(0, 1) === 0 ? 'add' : 'sub';
+            let a = rand(15, 200);
+            let b = rand(10, 150);
+            icon = ["?썟", "?뜋", "?㎏", "?럥"][rand(0, 3)];
+            if (op === 'add') {
+                story = `${getJosa(name, '??)} 媛꾩떇??${formatNum(a)}媛???붾뜲, 移쒓뎄媛 ${formatNum(b)}媛쒕? ??二쇱뿀?듬땲?? 媛꾩떇? 紐⑤몢 紐?媛쒖씪源뚯슂?`;
+                answer = `${formatNum(a+b)}媛?;
+            } else {
+                if (a < b) { let t = a; a = b; b = t; }
+                story = `臾몃갑援ъ뿉 洹?ъ슫 ?ㅽ떚而ㅺ? ${formatNum(a)}???덉뿀?듬땲?? ?댁젣 ?먮떂?ㅼ씠 ???${formatNum(b)}?μ쓣 ?ш컮?듬땲?? 臾몃갑援ъ뿉 ?⑥? ?ㅽ떚而ㅻ뒗 紐??μ씪源뚯슂?`;
+                answer = `${formatNum(a-b)}??;
+            }
+            break;
+        }
+        case 'story_mul': {
+            let m_items = [ ["苑?, "?≪씠"], ["?ы깢", "媛?], ["援ъ뒳", "媛?], ["?고븘", "?먮（"] ];
+            let item = m_items[rand(0, m_items.length - 1)];
+            let a = rand(10, 80);
+            let b = rand(4, 15);
+            icon = ["?럞", "?썚截?, "?뙹"][rand(0, 2)];
+            story = `${item[0]}????臾띠쓬??${formatNum(a)}${item[1]}??臾띠뼱???꾨쫫?ㅼ슫 ?좊Ъ ?곸옄 ${formatNum(b)}媛쒕? 留뚮뱾?덉뒿?덈떎. ?ъ슜??${item[0]}? 紐⑤몢 紐?${item[1]}?쇨퉴??`;
+            answer = `${formatNum(a*b)}${item[1]}`;
+            break;
+        }
+        case 'story_div': {
+            let total = rand(20, 100);
+            let p = rand(3, 9);
+            total = Math.floor(total / p) * p; 
+            if (total === 0) total = p * rand(3, 10);
+            icon = ["?뜒", "?뜫", "?뫂"][rand(0, 2)];
+            let kind = rand(0, 1) === 0 ? "?깅텇?? : "?ы븿??;
+            if (kind === "?깅텇??) {
+                story = `${getJosa(name, '??)} ?앹씪?뚰떚?????ы깢 ${formatNum(total)}媛쒕? 以鍮꾪빐??珥덈?諛쏆? 移쒓뎄 ${formatNum(p)}紐낆뿉寃??묎컳???섎늻??二쇰젮怨??⑸땲?? ??紐낅떦 紐?媛쒖뵫 諛쏆쓣 ???덉쓣源뚯슂?`;
+                answer = `${formatNum(total/p)}媛?;
+            } else {
+                let p2 = rand(3, 8);
+                total = p2 * rand(5, 15);
+                story = `鍮듭쭛??媛?援ъ슫 鍮듭씠 ${formatNum(total)}媛??덉뒿?덈떎. ??鍮듭쓣 遊됲닾 ?섎굹??${formatNum(p2)}媛쒖뵫 ?묎컳???섎늻???대뒗?ㅻ㈃ 紐⑤몢 紐?媛쒖쓽 遊됲닾媛 ?꾩슂?좉퉴??`;
+                answer = `${formatNum(total/p2)}媛?;
+            }
+            break;
+        }
+        case 'story_time': {
+            icon = ["?빊截?, "?깍툘", "??][rand(0, 2)];
+            if (rand(0, 1) === 0) {
+                let h1 = rand(1, 4), m1 = rand(5, 50);
+                let dur = rand(45, 150); // duration in minutes
+                let t1_mins = h1 * 60 + m1;
+                let t2_mins = t1_mins + dur;
+                
+                let sStr = `?ㅽ썑 ${h1}??${m1}遺?;
+                let eH = Math.floor(t2_mins / 60);
+                let eM = t2_mins % 60;
+                let eStr = `?ㅽ썑 ${eH}??${eM}遺?;
+                
+                if (rand(0, 1) === 0) {
+                    story = `${getJosa(name, '??)} ${sStr}???щ??덈뒗 留뚰솕 ?곹솕瑜?蹂닿린 ?쒖옉?댁꽌 ${eStr}???곕퉬瑜?猿먯뒿?덈떎. 留뚰솕瑜?蹂??쒓컙? 珥??쇰쭏留뚰겮 ?멸???`;
+                    let dh = Math.floor(dur / 60);
+                    let dm = dur % 60;
+                    answer = dh > 0 ? `${dh}?쒓컙 ${dm}遺? : `${dm}遺?;
+                } else {
+                    let dh = Math.floor(dur / 60);
+                    let dm = dur % 60;
+                    let durStr = dh > 0 ? `${dh}?쒓컙 ${dm}遺? : `${dm}遺?;
+                    story = `${getJosa(name, '媛')} ${durStr} ?숈븞 ?대룞???댁떖???섍퀬 ?쒓퀎瑜?蹂대땲 ${eStr}?댁뿀?듬땲?? ?대룞???쒖옉?덈뜕 ?쒓컖? 紐???紐?遺꾩씪源뚯슂?`;
+                    answer = `${sStr}`;
+                }
+            } else {
+                let m1 = rand(65, 200);
+                story = `${getJosa(name, '??)} ?좊㉧???곸뿉 媛湲??꾪빐 踰꾩뒪瑜??붿뒿?덈떎. 踰꾩뒪瑜??怨?媛????珥?${m1}遺꾩씠 嫄몃졇?듬땲?? ???쒓컙? 紐??쒓컙 紐?遺꾩씪源뚯슂?`;
+                let dh = Math.floor(m1 / 60);
+                let dm = m1 % 60;
+                answer = dh > 0 ? `${dh}?쒓컙 ${dm}遺? : `${dm}遺?;
+            }
+            break;
+        }
+        case 'story_weight': {
+            icon = ["?뽳툘", "?ⅸ", "?벀"][rand(0, 2)];
+            let w1 = rand(150, 950);
+            let w2 = rand(1500, 3500); // grams
+            if (rand(0, 1) === 0) {
+                let ansG = w1 + w2;
+                let h = Math.floor(ansG / 1000);
+                let g = ansG % 1000;
+                story = `媛寃뚯뿉???덉걶 鍮?諛붽뎄?덉쓽 臾닿쾶瑜??ъ뼱 蹂대땲 ${w1}g ?댁뿀?듬땲?? 諛붽뎄???덉뿉 留쏆엳??怨쇱씪??${w2}g ?댁븯?듬땲?? 諛붽뎄?덉? 怨쇱씪 ?꾩껜??臾닿쾶??紐?kg 紐?g ?쇨퉴??`;
+                answer = h > 0 ? `${h}kg ${g}g` : `${g}g`;
+            } else {
+                let bagW = rand(2500, 4500);
+                let bookW = rand(800, 1900);
+                let rG = bagW - bookW;
+                let h = Math.floor(rG / 1000);
+                let g = rG % 1000;
+                
+                let bagStr = Math.floor(bagW/1000) > 0 ? `${Math.floor(bagW/1000)}kg ${bagW%1000}g` : `${bagW}g`;
+                let bookStr = Math.floor(bookW/1000) > 0 ? `${Math.floor(bookW/1000)}kg ${bookW%1000}g` : `${bookW}g`;
+                
+                story = `${getJosa(name, '媛')} 硫붽퀬 ?ㅻ땲??媛諛⑹쓽 ?꾩껜 臾닿쾶??${bagStr} ?낅땲?? 吏묒뿉 ?꾩갑?댁꽌 媛諛⑹뿉??援먭낵??${bookStr} 遺꾨웾??爰쇰깉???? 媛諛⑹쓽 ?⑥? 臾닿쾶??紐?kg 紐?g???좉퉴??`;
+                answer = h > 0 ? `${h}kg ${g}g` : `${g}g`;
+            }
+            break;
+        }
+        case 'story_len': {
+            icon = ["?뱩", "?쉶", "?썵截?][rand(0, 2)];
+            if (rand(0, 1) === 0) {
+                let len1 = rand(120, 350);
+                let len2 = rand(90, 250);
+                let ans = len1 + len2;
+                let h = Math.floor(ans / 100);
+                let c = ans % 100;
+                
+                let l1_str = Math.floor(len1/100) > 0 ? `${Math.floor(len1/100)}m ${len1%100}cm` : `${len1}cm`;
+                let l2_str = Math.floor(len2/100) > 0 ? `${Math.floor(len2/100)}m ${len2%100}cm` : `${len2}cm`;
+                
+                story = `誘몄닠 ?쒓컙???됲뀒?댄봽 2媛쒕? 湲멸쾶 ?댁뼱 遺숈씠?ㅺ퀬 ?⑸땲?? 湲몄씠媛 ${l1_str} ???뚯씠?꾩? 湲몄씠媛 ${l2_str} ???뚯씠?꾨? ?쒕줈 寃뱀튂吏 ?딄쾶 ?댁뼱 遺숈??듬땲?? ?댁뼱吏??뚯씠?꾩쓽 珥?湲몄씠??紐?m 紐?cm?쇨퉴??`;
+                answer = `${h}m ${c}cm`;
+            } else {
+                let km = rand(2, 6);
+                let m = rand(100, 800);
+                let totalM = km * 1000 + m; 
+                let walked = rand(600, 2000);
+                let left = totalM - walked;
+                
+                let left_km = Math.floor(left / 1000);
+                let left_m = left % 1000;
+                let ansStr = left_km > 0 ? `${left_km}km ${left_m}m` : `${left_m}m`;
+                
+                story = `${getJosa(name, '??)} 吏묒뿉???좊㉧???곴퉴吏??嫄곕━??臾대젮 ${km}km ${m}m ?낅땲?? ${getJosa(name, '媛')} ?먯쟾嫄곕? ?怨?${walked}m瑜??щ젮媛붾떎硫? ?좊㉧?덈똻源뚯? ?⑥? 嫄곕━???쇰쭏???좉퉴??`;
+                answer = ansStr;
+            }
+            break;
+        }
+        case 'story_mixed': {
+            icon = ["?㎈", "?뜑", "?㎥"][rand(0, 2)];
+            let init = rand(10, 30);
+            let plus = rand(20, 50);
+            let div = rand(3, 6);
+            
+            let tempTarget = Math.floor((init + plus) / div);
+            let newPlus = (tempTarget * div) - init;
+            if (newPlus <= 0) newPlus += div * 3;
+            let ans = (init + newPlus) / div;
+            
+            story = `${getJosa(name, '??)} 泥섏쓬??援ъ뒳??${init}媛?媛吏怨??덉뿀?붾뜲, ?꾨튌媛 ${newPlus}媛쒕? ???ъ＜?⑥뒿?덈떎. ??援ъ뒳??移쒗븳 移쒓뎄 ${div}紐낆뿉寃?怨듯룊?섍쾶 ?섎늻??以?ㅻ㈃ ??紐낅떦 怨듯룊?섍쾶 紐?媛쒖뵫 ?섎늻??媛吏????덉쓣源뚯슂?`;
+            answer = `${ans}媛?;
+            break;
+        }
+        case 'story_conv': {
+            icon = ["?봽", "??", "?뮕"][rand(0, 2)];
+            let typ = rand(0, 2);
+            if (typ === 0) { 
+                let m = rand(80, 220);
+                let h = Math.floor(m / 60);
+                let rem = m % 60;
+                story = `?꾨튌媛 ?댁쟾?섎뒗 ?먮룞李④? 怨좎냽?꾨줈瑜??щ━????珥?${m}遺꾩씠 嫄몃┛?ㅺ퀬 ?⑸땲?? ??湲??쒓컙? 紐??쒓컙 紐?遺꾩쑝濡?諛붽? ???덉쓣源뚯슂?`;
+                answer = `${h}?쒓컙 ${rem}遺?;
+            } else if (typ === 1) { 
+                let g = rand(1200, 4800);
+                let kg = Math.floor(g / 1000);
+                let rem = g % 1000;
+                story = `?쒖옣 ?꾩??④? 而ㅻ떎? ?섎컯 ???듭쓽 臾닿쾶瑜??ъ뼱蹂대땲 ${g}g ?댁뿀?듬땲?? ???섎컯??臾닿쾶瑜?'kg'怨?'g' ?⑥쐞瑜?紐⑤몢 ?ъ슜?댁꽌 ?쒗쁽??蹂댁꽭??`;
+                answer = `${kg}kg ${rem}g`;
+            } else { 
+                let cm = rand(150, 680);
+                let m = Math.floor(cm / 100);
+                let rem = cm % 100;
+                story = `紐⑹닔 ?꾩??④? 媛?몄삤??湲??먮ぉ??湲몄씠??臾대젮 ${cm}cm ?낅땲?? ??湲몄씠瑜?'m'? 'cm' ?⑥쐞瑜?紐⑤몢 ?④퍡 ?ъ슜?댁꽌 ?섑??대㈃ ?대뼸寃??좉퉴??`;
+                answer = `${m}m ${rem}cm`;
+            }
+            break;
+        }
+    }
+    
+    let exprHTML = `<div class="story-wrapper"><div class="story-icon">${icon}</div><div class="story-text">${story}</div></div>`;
+    return { expr: exprHTML, ans: answer };
+}
