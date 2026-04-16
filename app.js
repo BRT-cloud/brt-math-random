@@ -183,6 +183,19 @@ function formatNum(numStr) {
   return res;
 }
 
+// 이름의 받침 유무에 따라 알맞은 조사를 붙여주는 함수
+function getJosa(name, type) {
+  const lastChar = name.charCodeAt(name.length - 1);
+  // 한글의 유니코드 범위 밖이거나 오류가 있는 경우 기본 처리를 위해
+  if (lastChar < 44032 || lastChar > 55203) return name + type; 
+  
+  const hasJongseong = (lastChar - 44032) % 28 > 0;
+  if (type === '는') return hasJongseong ? name + '이는' : name + '는';
+  if (type === '가') return hasJongseong ? name + '이가' : name + '가';
+  if (type === '네') return hasJongseong ? name + '이네' : name + '네';
+  return name;
+}
+
 /* =========================================
    STORY PROBLEM GENERATOR (NEW 8 DOMAINS)
 ========================================= */
@@ -204,7 +217,7 @@ function generateStoryProblem(type) {
             let b = rand(10, 150);
             icon = ["🛒", "🍎", "🧸", "🎈"][rand(0, 3)];
             if (op === 'add') {
-                story = `${name}이는 간식을 ${formatNum(a)}개 샀는데, 친구가 ${formatNum(b)}개를 더 주었습니다. 간식은 모두 몇 개일까요?`;
+                story = `${getJosa(name, '는')} 간식을 ${formatNum(a)}개 샀는데, 친구가 ${formatNum(b)}개를 더 주었습니다. 간식은 모두 몇 개일까요?`;
                 answer = `${formatNum(a+b)}개`;
             } else {
                 if (a < b) { let t = a; a = b; b = t; }
@@ -231,7 +244,7 @@ function generateStoryProblem(type) {
             icon = ["🍕", "🍬", "👦"][rand(0, 2)];
             let kind = rand(0, 1) === 0 ? "등분제" : "포함제";
             if (kind === "등분제") {
-                story = `${name}이는 생일파티에 쓸 사탕 ${formatNum(total)}개를 준비해서 초대받은 친구 ${formatNum(p)}명에게 똑같이 나누어 주려고 합니다. 한 명당 몇 개씩 받을 수 있을까요?`;
+                story = `${getJosa(name, '는')} 생일파티에 쓸 사탕 ${formatNum(total)}개를 준비해서 초대받은 친구 ${formatNum(p)}명에게 똑같이 나누어 주려고 합니다. 한 명당 몇 개씩 받을 수 있을까요?`;
                 answer = `${formatNum(total/p)}개`;
             } else {
                 let p2 = rand(3, 8);
@@ -255,7 +268,7 @@ function generateStoryProblem(type) {
                 let eStr = `오후 ${eH}시 ${eM}분`;
                 
                 if (rand(0, 1) === 0) {
-                    story = `${name}이는 ${sStr}에 재미있는 만화 영화를 보기 시작해서 ${eStr}에 티비를 껐습니다. 만화를 본 시간은 총 얼마만큼 인가요?`;
+                    story = `${getJosa(name, '는')} ${sStr}에 재미있는 만화 영화를 보기 시작해서 ${eStr}에 티비를 껐습니다. 만화를 본 시간은 총 얼마만큼 인가요?`;
                     let dh = Math.floor(dur / 60);
                     let dm = dur % 60;
                     answer = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
@@ -263,12 +276,12 @@ function generateStoryProblem(type) {
                     let dh = Math.floor(dur / 60);
                     let dm = dur % 60;
                     let durStr = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
-                    story = `${name}이가 ${durStr} 동안 운동을 열심히 하고 시계를 보니 ${eStr}이었습니다. 운동을 시작했던 시각은 몇 시 몇 분일까요?`;
+                    story = `${getJosa(name, '가')} ${durStr} 동안 운동을 열심히 하고 시계를 보니 ${eStr}이었습니다. 운동을 시작했던 시각은 몇 시 몇 분일까요?`;
                     answer = `${sStr}`;
                 }
             } else {
                 let m1 = rand(65, 200);
-                story = `${name}이는 할머니 댁에 가기 위해 버스를 탔습니다. 버스를 타고 가는 데 총 ${m1}분이 걸렸습니다. 이 시간은 몇 시간 몇 분일까요?`;
+                story = `${getJosa(name, '는')} 할머니 댁에 가기 위해 버스를 탔습니다. 버스를 타고 가는 데 총 ${m1}분이 걸렸습니다. 이 시간은 몇 시간 몇 분일까요?`;
                 let dh = Math.floor(m1 / 60);
                 let dm = m1 % 60;
                 answer = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
@@ -295,7 +308,7 @@ function generateStoryProblem(type) {
                 let bagStr = Math.floor(bagW/1000) > 0 ? `${Math.floor(bagW/1000)}kg ${bagW%1000}g` : `${bagW}g`;
                 let bookStr = Math.floor(bookW/1000) > 0 ? `${Math.floor(bookW/1000)}kg ${bookW%1000}g` : `${bookW}g`;
                 
-                story = `${name}이가 메고 다니는 가방의 전체 무게는 ${bagStr} 입니다. 집에 도착해서 가방에서 교과서 ${bookStr} 분량을 꺼냈을 때, 가방의 남은 무게는 몇 kg 몇 g이 될까요?`;
+                story = `${getJosa(name, '가')} 메고 다니는 가방의 전체 무게는 ${bagStr} 입니다. 집에 도착해서 가방에서 교과서 ${bookStr} 분량을 꺼냈을 때, 가방의 남은 무게는 몇 kg 몇 g이 될까요?`;
                 answer = h > 0 ? `${h}kg ${g}g` : `${g}g`;
             }
             break;
@@ -325,7 +338,7 @@ function generateStoryProblem(type) {
                 let left_m = left % 1000;
                 let ansStr = left_km > 0 ? `${left_km}km ${left_m}m` : `${left_m}m`;
                 
-                story = `${name}이네 집에서 할머니 댁까지의 거리는 무려 ${km}km ${m}m 입니다. ${name}이가 자전거를 타고 ${walked}m를 달려갔다면, 할머니댁까지 남은 거리는 얼마나 될까요?`;
+                story = `${getJosa(name, '네')} 집에서 할머니 댁까지의 거리는 무려 ${km}km ${m}m 입니다. ${getJosa(name, '가')} 자전거를 타고 ${walked}m를 달려갔다면, 할머니댁까지 남은 거리는 얼마나 될까요?`;
                 answer = ansStr;
             }
             break;
@@ -341,7 +354,7 @@ function generateStoryProblem(type) {
             if (newPlus <= 0) newPlus += div * 3;
             let ans = (init + newPlus) / div;
             
-            story = `${name}이는 처음에 구슬을 ${init}개 가지고 있었는데, 아빠가 ${newPlus}개를 더 사주셨습니다. 이 구슬을 친한 친구 ${div}명에게 공평하게 나누어 준다면 한 명당 공평하게 몇 개씩 나누어 가질 수 있을까요?`;
+            story = `${getJosa(name, '는')} 처음에 구슬을 ${init}개 가지고 있었는데, 아빠가 ${newPlus}개를 더 사주셨습니다. 이 구슬을 친한 친구 ${div}명에게 공평하게 나누어 준다면 한 명당 공평하게 몇 개씩 나누어 가질 수 있을까요?`;
             answer = `${ans}개`;
             break;
         }

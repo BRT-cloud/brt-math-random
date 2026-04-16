@@ -491,6 +491,70 @@ button {
 .corner-bl { bottom: 12px; left: 14px; }
 .corner-br { bottom: 12px; right: 14px; }
 
+/* Learning Journal */
+.learning-journal {
+  margin-top: 25px;
+  border: 2px dashed var(--primary);
+  border-radius: 15px;
+  padding: 15px 20px;
+  background-color: #FFF5F8;
+  page-break-inside: avoid;
+  width: 100%;
+}
+
+.journal-title {
+  font-size: 18px;
+  color: var(--primary-hover);
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.journal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.journal-emotions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 16px;
+  flex-wrap: wrap;
+}
+
+.emo-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-main);
+}
+
+.emo-circle {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  background: white;
+}
+
+.journal-text-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.journal-line {
+  border-bottom: 2px dashed #D0E5F5;
+  height: 30px;
+  color: var(--text-sub);
+  font-size: 14px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 5px;
+}
+
 /* Print Styles */
 @media print {
   @page {
@@ -525,16 +589,14 @@ button {
 
   .a4-page {
     width: 200mm;
-    height: 287mm;
-    max-height: 287mm;
-    min-height: auto;
+    min-height: 287mm;
     box-shadow: none;
     border: 2px dashed var(--border);
     border-radius: 14px;
-    padding: 8mm 10mm;
+    padding: 6mm 8mm;
     margin: 0 auto;
     page-break-after: always;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .print-worksheet-only #answerSheet {
@@ -562,7 +624,7 @@ button {
   }
 
   .problems-container {
-    gap: 10px 10px;
+    gap: 6px 10px;
   }
 
   .problem-item {
@@ -594,8 +656,8 @@ button {
   }
 
   .calc-space {
-    height: 50px;
-    margin-top: 5px;
+    height: 38px;
+    margin-top: 4px;
     background-size: 12px 12px;
     border-radius: 6px;
   }
@@ -658,6 +720,37 @@ button {
   .corner-deco {
     font-size: 14px;
     opacity: 0.2;
+  }
+
+  .learning-journal {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-width: 1px;
+    border-radius: 10px;
+  }
+  .journal-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .journal-emotions {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .emo-circle {
+    width: 12px;
+    height: 12px;
+    border-width: 1px;
+  }
+  .emo-item {
+    gap: 4px;
+  }
+  .journal-line {
+    height: 20px;
+    font-size: 11px;
+    border-bottom-width: 1px;
+  }
+  .journal-content {
+    gap: 10px;
   }
 }
 
