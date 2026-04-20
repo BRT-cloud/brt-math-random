@@ -206,97 +206,111 @@ function generateStoryProblem(type) {
     }
     
     let name = storyNames[rand(0, storyNames.length - 1)];
+    let nameNun = getJosa(name, '는');
+    let nameGa = getJosa(name, '가');
+    let nameNe = getJosa(name, '네');
     let story = "";
     let answer = "";
     let icon = "";
+
+    function pick(arr) { return arr[rand(0, arr.length - 1)]; }
     
     switch(type) {
         case 'story_addsub': {
             let op = rand(0, 1) === 0 ? 'add' : 'sub';
             let a = rand(15, 200);
             let b = rand(10, 150);
-            icon = ["🛒", "🍎", "🧸", "🎈"][rand(0, 3)];
             if (op === 'add') {
-                story = `${getJosa(name, '는')} 간식을 ${formatNum(a)}개 샀는데, 친구가 ${formatNum(b)}개를 더 주었습니다. 간식은 모두 몇 개일까요?`;
-                answer = `${formatNum(a+b)}개`;
+                let sc = pick(storyScenarios.addsub_add);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, formatNum(a), formatNum(b));
+                answer = `${formatNum(a+b)}${sc.unit}`;
             } else {
                 if (a < b) { let t = a; a = b; b = t; }
-                story = `문방구에 귀여운 스티커가 ${formatNum(a)}장 있었습니다. 어제 손님들이 와서 ${formatNum(b)}장을 사갔습니다. 문방구에 남은 스티커는 몇 장일까요?`;
-                answer = `${formatNum(a-b)}장`;
+                let sc = pick(storyScenarios.addsub_sub);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, formatNum(a), formatNum(b));
+                answer = `${formatNum(a-b)}${sc.unit}`;
             }
             break;
         }
         case 'story_mul': {
-            let m_items = [ ["꽃", "송이"], ["사탕", "개"], ["구슬", "개"], ["연필", "자루"] ];
-            let item = m_items[rand(0, m_items.length - 1)];
             let a = rand(10, 80);
             let b = rand(4, 15);
-            icon = ["🎁", "🛍️", "🌼"][rand(0, 2)];
-            story = `${item[0]}을 한 묶음에 ${formatNum(a)}${item[1]}씩 묶어서 아름다운 선물 상자 ${formatNum(b)}개를 만들었습니다. 사용된 ${item[0]}은 모두 몇 ${item[1]}일까요?`;
-            answer = `${formatNum(a*b)}${item[1]}`;
+            let sc = pick(storyScenarios.mul);
+            icon = sc.icon;
+            story = sc.tpl(formatNum(a), formatNum(b), sc.item);
+            answer = `${formatNum(a*b)}${sc.item[1]}`;
             break;
         }
         case 'story_div': {
-            let total = rand(20, 100);
-            let p = rand(3, 9);
-            total = Math.floor(total / p) * p; 
-            if (total === 0) total = p * rand(3, 10);
-            icon = ["🍕", "🍬", "👦"][rand(0, 2)];
-            let kind = rand(0, 1) === 0 ? "등분제" : "포함제";
-            if (kind === "등분제") {
-                story = `${getJosa(name, '는')} 생일파티에 쓸 사탕 ${formatNum(total)}개를 준비해서 초대받은 친구 ${formatNum(p)}명에게 똑같이 나누어 주려고 합니다. 한 명당 몇 개씩 받을 수 있을까요?`;
+            let kind = rand(0, 1) === 0 ? "equal" : "contain";
+            if (kind === "equal") {
+                let p = rand(3, 9);
+                let total = p * rand(3, 12);
+                let sc = pick(storyScenarios.div_equal);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, formatNum(total), formatNum(p));
                 answer = `${formatNum(total/p)}개`;
             } else {
                 let p2 = rand(3, 8);
-                total = p2 * rand(5, 15);
-                story = `빵집에 갓 구운 빵이 ${formatNum(total)}개 있습니다. 이 빵을 봉투 하나당 ${formatNum(p2)}개씩 똑같이 나누어 담는다면 모두 몇 개의 봉투가 필요할까요?`;
+                let total = p2 * rand(5, 15);
+                let sc = pick(storyScenarios.div_contain);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, formatNum(total), formatNum(p2));
                 answer = `${formatNum(total/p2)}개`;
             }
             break;
         }
         case 'story_time': {
-            icon = ["🕰️", "⏱️", "⏰"][rand(0, 2)];
+            icon = pick(["🕰️", "⏱️", "⏰"]);
             if (rand(0, 1) === 0) {
                 let h1 = rand(1, 4), m1 = rand(5, 50);
-                let dur = rand(45, 150); // duration in minutes
+                let dur = rand(45, 150);
                 let t1_mins = h1 * 60 + m1;
                 let t2_mins = t1_mins + dur;
-                
                 let sStr = `오후 ${h1}시 ${m1}분`;
                 let eH = Math.floor(t2_mins / 60);
                 let eM = t2_mins % 60;
                 let eStr = `오후 ${eH}시 ${eM}분`;
-                
-                if (rand(0, 1) === 0) {
-                    story = `${getJosa(name, '는')} ${sStr}에 재미있는 만화 영화를 보기 시작해서 ${eStr}에 티비를 껐습니다. 만화를 본 시간은 총 얼마만큼 인가요?`;
-                    let dh = Math.floor(dur / 60);
-                    let dm = dur % 60;
-                    answer = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
+                let dh = Math.floor(dur / 60);
+                let dm = dur % 60;
+                let durStr = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
+
+                let qType = rand(0, 2);
+                if (qType === 0) {
+                    let sc = pick(storyScenarios.time_duration);
+                    story = sc.tpl(nameNun, sStr, eStr);
+                    answer = durStr;
+                } else if (qType === 1) {
+                    let sc = pick(storyScenarios.time_start);
+                    story = sc.tpl(nameNun, durStr, eStr);
+                    answer = sStr;
                 } else {
-                    let dh = Math.floor(dur / 60);
-                    let dm = dur % 60;
-                    let durStr = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
-                    story = `${getJosa(name, '가')} ${durStr} 동안 운동을 열심히 하고 시계를 보니 ${eStr}이었습니다. 운동을 시작했던 시각은 몇 시 몇 분일까요?`;
-                    answer = `${sStr}`;
+                    let sc = pick(storyScenarios.time_end);
+                    story = sc.tpl(nameNun, sStr, durStr);
+                    answer = eStr;
                 }
             } else {
                 let m1 = rand(65, 200);
-                story = `${getJosa(name, '는')} 할머니 댁에 가기 위해 버스를 탔습니다. 버스를 타고 가는 데 총 ${m1}분이 걸렸습니다. 이 시간은 몇 시간 몇 분일까요?`;
                 let dh = Math.floor(m1 / 60);
                 let dm = m1 % 60;
+                let sc = pick(storyScenarios.time_convert);
+                story = sc.tpl(nameNun, m1);
                 answer = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
             }
             break;
         }
         case 'story_weight': {
-            icon = ["⚖️", "🥩", "📦"][rand(0, 2)];
-            let w1 = rand(150, 950);
-            let w2 = rand(1500, 3500); // grams
             if (rand(0, 1) === 0) {
+                let w1 = rand(150, 950);
+                let w2 = rand(1500, 3500);
                 let ansG = w1 + w2;
                 let h = Math.floor(ansG / 1000);
                 let g = ansG % 1000;
-                story = `가게에서 예쁜 빈 바구니의 무게를 재어 보니 ${w1}g 이었습니다. 바구니 안에 맛있는 과일을 ${w2}g 담았습니다. 바구니와 과일 전체의 무게는 몇 kg 몇 g 일까요?`;
+                let sc = pick(storyScenarios.weight_add);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, w1, w2);
                 answer = h > 0 ? `${h}kg ${g}g` : `${g}g`;
             } else {
                 let bagW = rand(2500, 4500);
@@ -304,80 +318,80 @@ function generateStoryProblem(type) {
                 let rG = bagW - bookW;
                 let h = Math.floor(rG / 1000);
                 let g = rG % 1000;
-                
                 let bagStr = Math.floor(bagW/1000) > 0 ? `${Math.floor(bagW/1000)}kg ${bagW%1000}g` : `${bagW}g`;
                 let bookStr = Math.floor(bookW/1000) > 0 ? `${Math.floor(bookW/1000)}kg ${bookW%1000}g` : `${bookW}g`;
-                
-                story = `${getJosa(name, '가')} 메고 다니는 가방의 전체 무게는 ${bagStr} 입니다. 집에 도착해서 가방에서 교과서 ${bookStr} 분량을 꺼냈을 때, 가방의 남은 무게는 몇 kg 몇 g이 될까요?`;
+                let sc = pick(storyScenarios.weight_sub);
+                icon = sc.icon;
+                story = sc.tpl(nameGa, bagStr, bookStr);
                 answer = h > 0 ? `${h}kg ${g}g` : `${g}g`;
             }
             break;
         }
         case 'story_len': {
-            icon = ["📏", "🚌", "🛣️"][rand(0, 2)];
             if (rand(0, 1) === 0) {
                 let len1 = rand(120, 350);
                 let len2 = rand(90, 250);
                 let ans = len1 + len2;
                 let h = Math.floor(ans / 100);
                 let c = ans % 100;
-                
                 let l1_str = Math.floor(len1/100) > 0 ? `${Math.floor(len1/100)}m ${len1%100}cm` : `${len1}cm`;
                 let l2_str = Math.floor(len2/100) > 0 ? `${Math.floor(len2/100)}m ${len2%100}cm` : `${len2}cm`;
-                
-                story = `미술 시간에 색테이프 2개를 길게 이어 붙이려고 합니다. 길이가 ${l1_str} 인 테이프와 길이가 ${l2_str} 인 테이프를 서로 겹치지 않게 이어 붙였습니다. 이어진 테이프의 총 길이는 몇 m 몇 cm일까요?`;
+                let sc = pick(storyScenarios.len_add);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, l1_str, l2_str);
                 answer = `${h}m ${c}cm`;
             } else {
                 let km = rand(2, 6);
                 let m = rand(100, 800);
-                let totalM = km * 1000 + m; 
+                let totalM = km * 1000 + m;
                 let walked = rand(600, 2000);
                 let left = totalM - walked;
-                
                 let left_km = Math.floor(left / 1000);
                 let left_m = left % 1000;
-                let ansStr = left_km > 0 ? `${left_km}km ${left_m}m` : `${left_m}m`;
-                
-                story = `${getJosa(name, '네')} 집에서 할머니 댁까지의 거리는 무려 ${km}km ${m}m 입니다. ${getJosa(name, '가')} 자전거를 타고 ${walked}m를 달려갔다면, 할머니댁까지 남은 거리는 얼마나 될까요?`;
-                answer = ansStr;
+                let sc = pick(storyScenarios.len_sub);
+                icon = sc.icon;
+                story = sc.tpl(nameNe, km, m, walked);
+                answer = left_km > 0 ? `${left_km}km ${left_m}m` : `${left_m}m`;
             }
             break;
         }
         case 'story_mixed': {
-            icon = ["🧺", "🍔", "🧩"][rand(0, 2)];
             let init = rand(10, 30);
             let plus = rand(20, 50);
             let div = rand(3, 6);
-            
             let tempTarget = Math.floor((init + plus) / div);
             let newPlus = (tempTarget * div) - init;
             if (newPlus <= 0) newPlus += div * 3;
             let ans = (init + newPlus) / div;
-            
-            story = `${getJosa(name, '는')} 처음에 구슬을 ${init}개 가지고 있었는데, 아빠가 ${newPlus}개를 더 사주셨습니다. 이 구슬을 친한 친구 ${div}명에게 공평하게 나누어 준다면 한 명당 공평하게 몇 개씩 나누어 가질 수 있을까요?`;
+            let sc = pick(storyScenarios.mixed);
+            icon = sc.icon;
+            story = sc.tpl(nameNun, init, newPlus, div);
             answer = `${ans}개`;
             break;
         }
         case 'story_conv': {
-            icon = ["🔄", "🚀", "💡"][rand(0, 2)];
+            icon = pick(["🔄", "🚀", "💡"]);
             let typ = rand(0, 2);
-            if (typ === 0) { 
+            if (typ === 0) {
                 let m = rand(80, 220);
                 let h = Math.floor(m / 60);
                 let rem = m % 60;
-                story = `아빠가 운전하는 자동차가 고속도로를 달리는 데 총 ${m}분이 걸린다고 합니다. 이 긴 시간은 몇 시간 몇 분으로 바꿀 수 있을까요?`;
+                let sc = pick(storyScenarios.conv_time);
+                story = sc.tpl(m);
                 answer = `${h}시간 ${rem}분`;
-            } else if (typ === 1) { 
+            } else if (typ === 1) {
                 let g = rand(1200, 4800);
                 let kg = Math.floor(g / 1000);
                 let rem = g % 1000;
-                story = `시장 아저씨가 커다란 수박 한 통의 무게를 재어보니 ${g}g 이었습니다. 이 수박의 무게를 'kg'과 'g' 단위를 모두 사용해서 표현해 보세요.`;
+                let sc = pick(storyScenarios.conv_weight);
+                story = sc.tpl(g);
                 answer = `${kg}kg ${rem}g`;
-            } else { 
+            } else {
                 let cm = rand(150, 680);
                 let m = Math.floor(cm / 100);
                 let rem = cm % 100;
-                story = `목수 아저씨가 가져오신 긴 원목의 길이는 무려 ${cm}cm 입니다. 이 길이를 'm'와 'cm' 단위를 모두 함께 사용해서 나타내면 어떻게 될까요?`;
+                let sc = pick(storyScenarios.conv_length);
+                story = sc.tpl(cm);
                 answer = `${m}m ${rem}cm`;
             }
             break;
