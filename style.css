@@ -210,16 +210,18 @@ button {
 /* 구름 느낌의 둥근 A4 종이 테두리 */
 .a4-page {
   width: 210mm;
-  min-height: 297mm;
+  height: 297mm; /* 무조건 한 페이지에 들어오도록 높이 고정 */
   background: white;
   box-shadow: var(--card-shadow);
   border-radius: 30px; /* 둥근 종이 */
   border: 4px dashed var(--border); /* 점선 몽글몽글 */
-  padding: 12mm 14mm;
+  padding: 10mm 12mm; /* 내부 여백 최적화 */
   box-sizing: border-box;
   position: relative;
   flex-shrink: 0;
-  height: max-content;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 콘텐츠 넘침 방지 */
 }
 
 .worksheet-header {
@@ -264,10 +266,25 @@ button {
   display: grid;
   gap: 14px 14px;
   width: 100%;
+  flex: 1; /* 남은 세로 공간을 유연하게 활용 */
+  min-height: 0; /* overflow 방지 */
 }
 
 .layout-1-col {
   grid-template-columns: 1fr;
+  row-gap: 8px; /* 1단일 때 세로 간격을 더 조밀하게 조정 */
+}
+
+.layout-1-col .calc-space {
+  height: 42px; /* 1단일 때 모눈종이 높이 최적화 */
+}
+
+.layout-1-col .calc-space.lined {
+  height: 48px; /* 1단 문장제 줄노트 높이 최적화 */
+}
+
+.layout-1-col .story-text {
+  font-size: 14.5px; /* 1단일 때 문장제 폰트 살짝 축소 */
 }
 
 .layout-2-col {
@@ -493,10 +510,10 @@ button {
 
 /* Learning Journal */
 .learning-journal {
-  margin-top: 25px;
+  margin-top: auto; /* 페이지의 가장 아랫부분에 자연스럽게 안착 */
   border: 2px dashed var(--primary);
   border-radius: 15px;
-  padding: 15px 20px;
+  padding: 12px 18px; /* 패딩을 살짝 줄여 여유 확보 */
   background-color: #FFF5F8;
   page-break-inside: avoid;
   width: 100%;
@@ -559,7 +576,7 @@ button {
 @media print {
   @page {
     size: A4;
-    margin: 5mm;
+    margin: 0; /* 브라우저 기본 여백으로 인한 밀림 방지 */
   }
   
   body {
@@ -588,15 +605,19 @@ button {
   }
 
   .a4-page {
-    width: 200mm;
-    min-height: 287mm;
+    width: 210mm;
+    height: 297mm; /* min-height에서 height로 완전 고정하여 페이지 밀림 방지 */
     box-shadow: none;
     border: 2px dashed var(--border);
     border-radius: 14px;
-    padding: 6mm 8mm;
+    padding: 10mm 12mm; /* 여백 조정 */
     margin: 0 auto;
     page-break-after: always;
-    overflow: visible;
+    page-break-inside: avoid;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
   }
 
   .print-worksheet-only #answerSheet {
@@ -624,35 +645,41 @@ button {
   }
 
   .problems-container {
-    gap: 6px 10px;
+    gap: 8px 10px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .layout-1-col {
+    row-gap: 6px;
   }
 
   .problem-item {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .problem-no {
-    min-width: 26px;
-    height: 26px;
-    font-size: 13px;
-    margin-right: 8px;
+    min-width: 24px;
+    height: 24px;
+    font-size: 12px;
+    margin-right: 6px;
     margin-top: 1px;
   }
 
   .story-icon {
-    font-size: 18px;
-    min-width: 30px;
-    height: 30px;
-    padding: 4px;
+    font-size: 16px;
+    min-width: 28px;
+    height: 28px;
+    padding: 3px;
   }
 
   .story-text {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.4;
   }
 
   .story-wrapper {
-    gap: 8px;
+    gap: 6px;
   }
 
   .calc-space {
@@ -662,14 +689,18 @@ button {
     border-radius: 6px;
   }
 
-  .calc-space.lined {
+  .layout-1-col .calc-space {
+    height: 24px; /* 인쇄 시 1단은 모눈 크기를 줄임 */
+  }
+
+  .layout-1-col .calc-space.lined {
+    height: 30px; /* 인쇄 시 1단 문장제 줄노트 크기 조정 */
     background-image: repeating-linear-gradient(
       transparent,
-      transparent 18px,
-      #D0E5F5 18px,
-      #D0E5F5 19px
+      transparent 14px,
+      #D0E5F5 14px,
+      #D0E5F5 15px
     );
-    border-radius: 6px;
   }
 
   .answers-container {
@@ -723,34 +754,34 @@ button {
   }
 
   .learning-journal {
-    margin-top: 8px;
+    margin-top: auto; /* 인쇄 시에도 하단에 고정되도록 */
     padding: 8px 10px;
     border-width: 1px;
     border-radius: 10px;
   }
   .journal-title {
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
   }
   .journal-emotions {
-    font-size: 11px;
-    gap: 8px;
+    font-size: 10px;
+    gap: 6px;
   }
   .emo-circle {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-width: 1px;
   }
   .emo-item {
-    gap: 4px;
+    gap: 3px;
   }
   .journal-line {
-    height: 20px;
-    font-size: 11px;
+    height: 18px;
+    font-size: 10px;
     border-bottom-width: 1px;
   }
   .journal-content {
-    gap: 10px;
+    gap: 6px;
   }
 }
 

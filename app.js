@@ -21,6 +21,7 @@ const categoriesData = {
     { value: 'mul_3x1', label: '세 자리 수 곱하기 한 자리 수' },
     { value: 'mul_2', label: '두 자리 수 곱셈' },
     { value: 'div_1', label: '나눗셈 기초 (나눗셈구구)' },
+    { value: 'div_3x1', label: '세 자리 수 나누기 한 자리 수' },
     { value: 'div_2', label: '두 자리 수 나눗셈' }
   ],
   frac_dec: [
@@ -62,8 +63,6 @@ const saveAnsBtn = document.getElementById('saveAnsBtn');
 const printWorksheetBtn = document.getElementById('printWorksheetBtn');
 const printAllBtn = document.getElementById('printAllBtn');
 
-// Story Elements
-const storyNames = ["민우", "서윤", "준서", "지우", "예준", "수아", "도윤", "하은", "지호", "지원", "서준", "유진"];
 
 // Initialize Options & UI Bindings
 function initCategoriesList() {
@@ -290,6 +289,11 @@ function generateStoryProblem(category, subCategory) {
             if (subCategory === 'div_1') {
                 b = rand(2, 9);
                 a = b * rand(2, 9);
+            } else if (subCategory === 'div_3x1') {
+                b = rand(2, 9);
+                let minQ = Math.ceil(100 / b);
+                let maxQ = Math.floor(999 / b);
+                a = b * rand(minQ, maxQ);
             } else if (subCategory === 'div_2') {
                 b = rand(10, 50);
                 a = b * rand(3, 15);
@@ -600,6 +604,14 @@ function generateMathProblems() {
       } else if (subCategory === 'div_1') {
         let b = rand(2, 9);
         let a = b * rand(2, 9);
+        expression = `${formatNum(a)} &divide; ${formatNum(b)} = `;
+        answer = a / b;
+        solutionData = { a, b: b, op: '÷', ans: a / b };
+      } else if (subCategory === 'div_3x1') {
+        let b = rand(2, 9);
+        let minQ = Math.ceil(100 / b);
+        let maxQ = Math.floor(999 / b);
+        let a = b * rand(minQ, maxQ);
         expression = `${formatNum(a)} &divide; ${formatNum(b)} = `;
         answer = a / b;
         solutionData = { a, b: b, op: '÷', ans: a / b };
