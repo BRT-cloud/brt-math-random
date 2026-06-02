@@ -1,49 +1,44 @@
 const categoriesData = {
   basic: [
-    { value: 'compare', label: '수의 크기 비교 (부등호)' },
-    { value: 'decompose', label: '수의 가르기와 모으기' },
-    { value: 'zero', label: '0의 개념' }
+    { value: 'compare', label: '수 크기 비교 (부등호)' },
+    { value: 'decompose', label: '수 모으기 가르기' },
+    { value: 'zero', label: '0의 연산' }
   ],
   add_sub: [
     { value: 'add_1', label: '한 자리 수 덧셈' },
     { value: 'add_2', label: '두 자리 수 덧셈' },
-    { value: 'add_3', label: '세 자리 수 이상 덧셈' },
+    { value: 'add_3', label: '세 자리 수 이상의 덧셈' },
     { value: 'sub_1', label: '한 자리 수 뺄셈' },
     { value: 'sub_2', label: '두 자리 수 뺄셈' },
-    { value: 'sub_3', label: '세 자리 수 이상 뺄셈' },
-    { value: 'mixed_add_sub_1', label: '한 자리 수 덧셈과 뺄셈 혼합' },
-    { value: 'mixed_add_sub_2', label: '두 자리 수 덧셈과 뺄셈 혼합' },
-    { value: 'mixed_add_sub_3', label: '세 자리 수 이상 덧셈과 뺄셈 혼합' }
+    { value: 'sub_3', label: '세 자리 수 이상의 뺄셈' },
+    { value: 'mixed_add_sub_1', label: '한 자리 수 덧뺄셈 혼합' },
+    { value: 'mixed_add_sub_2', label: '두 자리 수 덧뺄셈 혼합' },
+    { value: 'mixed_add_sub_3', label: '세 자리 수 이상의 덧뺄셈 혼합' }
   ],
   mul_div: [
-    { value: 'mul_1', label: '구구단 (한 자리 곱셈)' },
-    { value: 'mul_2x1', label: '두 자리 수 × 한 자리 수' },
-    { value: 'mul_3x1', label: '세 자리 수 × 한 자리 수' },
+    { value: 'mul_1', label: '구구단 (한 자리 수 곱셈)' },
+    { value: 'mul_2x1', label: '두 자리 수 곱하기 한 자리 수' },
+    { value: 'mul_3x1', label: '세 자리 수 곱하기 한 자리 수' },
     { value: 'mul_2', label: '두 자리 수 곱셈' },
-    { value: 'div_1', label: '나눗셈 기초 (나머지 없음)' },
+    { value: 'div_1', label: '나눗셈 기초 (나눗셈구구)' },
     { value: 'div_2', label: '두 자리 수 나눗셈' }
   ],
   frac_dec: [
-    { value: 'frac_add_sub', label: '분수의 덧셈/뺄셈' },
-    { value: 'dec_add_sub', label: '소수의 덧셈/뺄셈' },
+    { value: 'frac_add_sub', label: '분수 덧셈/뺄셈' },
+    { value: 'dec_add_sub', label: '소수 덧셈/뺄셈' },
     { value: 'factor_multi', label: '약수와 배수 구하기' }
   ],
   mixed: [
-    { value: 'mixed_2', label: '기호 2개 혼합' },
-    { value: 'mixed_3', label: '기호 3개 혼합' },
-    { value: 'mixed_br_2', label: '괄호 포함 기호 2개 혼합' },
-    { value: 'mixed_br_3', label: '괄호 포함 기호 3개 혼합' }
+    { value: 'mixed_2', label: '괄호 없는 2연산 혼합' },
+    { value: 'mixed_3', label: '괄호 없는 3연산 혼합' },
+    { value: 'mixed_br_2', label: '괄호가 있는 2연산 혼합' },
+    { value: 'mixed_br_3', label: '괄호가 있는 3연산 혼합' }
   ],
-  story: [
-    { value: 'story_all', label: '🎲 문장제 무작위 섞기' },
-    { value: 'story_addsub', label: '1. 덧셈과 뺄셈' },
-    { value: 'story_mul', label: '2. 곱셈' },
-    { value: 'story_div', label: '3. 나눗셈' },
-    { value: 'story_time', label: '4. 시간 계산' },
-    { value: 'story_weight', label: '5. 무게 측정' },
-    { value: 'story_len', label: '6. 길이 계산' },
-    { value: 'story_mixed', label: '7. 혼합 계산' },
-    { value: 'story_conv', label: '8. 단위 변환' }
+  measure: [
+    { value: 'time_calc', label: '시간 계산 (시간과 시각)' },
+    { value: 'weight_calc', label: '무게 계산' },
+    { value: 'len_calc', label: '길이 계산' },
+    { value: 'unit_conv', label: '단위 변환' }
   ]
 };
 
@@ -53,6 +48,7 @@ const subCategorySelect = document.getElementById('subCategory');
 const carryOverGroup = document.getElementById('carryOverGroup');
 const allowCarryOverCheckbox = document.getElementById('allowCarryOver');
 const layoutRadios = document.getElementsByName('layout');
+const probTypeRadios = document.getElementsByName('probType');
 const colorGuideCheck = document.getElementById('colorGuideCheck');
 const problemsContainer = document.getElementById('problemsContainer');
 const answersContainer = document.getElementById('answersContainer');
@@ -67,7 +63,7 @@ const printWorksheetBtn = document.getElementById('printWorksheetBtn');
 const printAllBtn = document.getElementById('printAllBtn');
 
 // Story Elements
-const storyNames = ["지우", "민수", "서윤", "도윤", "하준", "수아", "유빈", "은우", "건우", "시아", "아인", "연우"];
+const storyNames = ["민우", "서윤", "준서", "지우", "예준", "수아", "도윤", "하은", "지호", "지원", "서준", "유진"];
 
 // Initialize Options & UI Bindings
 function initCategoriesList() {
@@ -75,12 +71,12 @@ function initCategoriesList() {
   subCategorySelect.innerHTML = '';
 
   const defaultCats = [
-    {k: 'basic', l: '수의 개념 및 비교'},
+    {k: 'basic', l: '기초 수와 연산'},
     {k: 'add_sub', l: '덧셈과 뺄셈'},
     {k: 'mul_div', l: '곱셈과 나눗셈'},
     {k: 'frac_dec', l: '분수와 소수'},
     {k: 'mixed', l: '혼합 계산'},
-    {k: 'story', l: '📖 실생활 문장제 영역'}
+    {k: 'measure', l: '길이, 무게, 시간 (측정)'}
   ];
   
   defaultCats.forEach(c => {
@@ -124,7 +120,6 @@ function updateWorksheetTitle() {
     // Remove emojis for title
     let rawTitle = subText || mainText;
     rawTitle = rawTitle.replace(/[^\uAC00-\uD7A3a-zA-Z0-9\s()]/g, '').trim(); 
-    if(rawTitle === '문장제 무작위 섞기') rawTitle = '종합 실생활 문장제';
     
     worksheetTitle.textContent = rawTitle;
     answerSheetTitle.textContent = `${rawTitle} - 정답지`;
@@ -183,125 +178,227 @@ function formatNum(numStr) {
   return res;
 }
 
-// 이름의 받침 유무에 따라 알맞은 조사를 붙여주는 함수
-function getJosa(name, type) {
-  const lastChar = name.charCodeAt(name.length - 1);
-  // 한글의 유니코드 범위 밖이거나 오류가 있는 경우 기본 처리를 위해
-  if (lastChar < 44032 || lastChar > 55203) return name + type; 
-  
-  const hasJongseong = (lastChar - 44032) % 28 > 0;
-  if (type === '는') return hasJongseong ? name + '이는' : name + '는';
-  if (type === '가') return hasJongseong ? name + '이가' : name + '가';
-  if (type === '네') return hasJongseong ? name + '이네' : name + '네';
-  return name;
-}
-
 /* =========================================
-   STORY PROBLEM GENERATOR (NEW 8 DOMAINS)
-========================================= */
-function generateStoryProblem(type) {
-    if (type === 'story_all') {
-        const types = ['story_addsub', 'story_mul', 'story_div', 'story_time', 'story_weight', 'story_len', 'story_mixed', 'story_conv'];
-        type = types[rand(0, types.length - 1)];
-    }
-    
+   STORY PROBLEM GENERATOR
+ ========================================= */
+function generateStoryProblem(category, subCategory) {
     let name = storyNames[rand(0, storyNames.length - 1)];
+    let name2 = storyNames.filter(n => n !== name)[rand(0, storyNames.length - 2)];
     let nameNun = getJosa(name, '는');
+    let nameNun2 = getJosa(name2, '는');
     let nameGa = getJosa(name, '가');
-    let nameNe = getJosa(name, '네');
+    let nameNe = getJosa(name, '의');
     let story = "";
     let answer = "";
-    let icon = "";
+    let icon = "📝";
 
+    const allowCarry = allowCarryOverCheckbox.checked;
     function pick(arr) { return arr[rand(0, arr.length - 1)]; }
-    
-    switch(type) {
-        case 'story_addsub': {
-            let op = rand(0, 1) === 0 ? 'add' : 'sub';
-            let a = rand(15, 200);
-            let b = rand(10, 150);
-            if (op === 'add') {
-                let sc = pick(storyScenarios.addsub_add);
-                icon = sc.icon;
-                story = sc.tpl(nameNun, formatNum(a), formatNum(b));
-                answer = `${formatNum(a+b)}${sc.unit}`;
-            } else {
-                if (a < b) { let t = a; a = b; b = t; }
-                let sc = pick(storyScenarios.addsub_sub);
-                icon = sc.icon;
-                story = sc.tpl(nameNun, formatNum(a), formatNum(b));
-                answer = `${formatNum(a-b)}${sc.unit}`;
-            }
-            break;
+
+    // basic 카테고리
+    if (category === 'basic') {
+        if (subCategory === 'compare') {
+            let a = rand(10, 999);
+            let b = rand(10, 999);
+            while(a === b) { b = rand(10, 999); }
+            let scIdx = rand(0, storyScenarios.basic_compare.length - 1);
+            let sc = storyScenarios.basic_compare[scIdx];
+            icon = sc.icon;
+            story = sc.tpl(nameNun, nameNun2, formatNum(a), formatNum(b));
+            let isLess = (scIdx === 1); // "누가 풍선을 더 적게" 인 인덱스가 1
+            answer = isLess ? (a < b ? name : name2) : (a > b ? name : name2);
+        } else if (subCategory === 'decompose') {
+            let total = rand(10, 100);
+            let part = rand(1, total - 1);
+            let sc = pick(storyScenarios.basic_decompose);
+            icon = sc.icon;
+            story = sc.tpl(nameNun, formatNum(total), formatNum(part));
+            answer = `${formatNum(total - part)}${sc.unit}`;
+        } else if (subCategory === 'zero') {
+            let a = rand(1, 100);
+            let sc = pick(storyScenarios.basic_zero);
+            icon = sc.icon;
+            story = sc.tpl(nameNun, formatNum(a));
+            answer = `${formatNum(a)}${sc.unit}`;
         }
-        case 'story_mul': {
-            let a = rand(10, 80);
-            let b = rand(4, 15);
+    }
+    // add_sub 카테고리
+    else if (category === 'add_sub') {
+        let isAdd = subCategory.includes('add');
+        if (subCategory.includes('mixed_add_sub')) isAdd = Math.random() > 0.5;
+
+        let digits = 1;
+        if (subCategory.includes('_2')) digits = 2;
+        else if (subCategory.includes('_3')) digits = 3;
+
+        let min = Math.pow(10, digits - 1);
+        let max = Math.pow(10, digits) - 1;
+        if (digits === 1) min = 1;
+
+        let a = rand(min, max);
+        let b = rand(min, max);
+
+        if (isAdd) {
+            if (!allowCarry) {
+                a = rand(min, max);
+                const maxbStr = a.toString().split('').map(d => 9 - parseInt(d)).join('');
+                b = parseInt(maxbStr);
+                if (b < min) b = rand(min, max);
+            }
+            let sc = pick(storyScenarios.addsub_add);
+            icon = sc.icon;
+            story = sc.tpl(nameNun, formatNum(a), formatNum(b));
+            answer = `${formatNum(a + b)}${sc.unit}`;
+        } else {
+            if (!allowCarry) {
+                let a_str = ""; let b_str = "";
+                for(let d=0; d<digits; d++) {
+                    let d_a = rand(1, 9);
+                    let d_b = rand(1, d_a);
+                    a_str += d_a; b_str += d_b;
+                }
+                a = parseInt(a_str); b = parseInt(b_str);
+            } else {
+                a = rand(min, max);
+                b = rand(min, a);
+            }
+            let sc = pick(storyScenarios.addsub_sub);
+            icon = sc.icon;
+            story = sc.tpl(nameNun, formatNum(a), formatNum(b));
+            answer = `${formatNum(a - b)}${sc.unit}`;
+        }
+    }
+    // mul_div 카테고리
+    else if (category === 'mul_div') {
+        if (subCategory.startsWith('mul')) {
+            let a = 1, b = 1;
+            if (subCategory === 'mul_1') {
+                a = rand(2, 9); b = rand(2, 9);
+            } else if (subCategory === 'mul_2x1') {
+                a = rand(10, 99); b = rand(2, 9);
+            } else if (subCategory === 'mul_3x1') {
+                a = rand(100, 999); b = rand(2, 9);
+            } else if (subCategory === 'mul_2') {
+                a = rand(10, 99); b = rand(10, 99);
+            }
             let sc = pick(storyScenarios.mul);
             icon = sc.icon;
             story = sc.tpl(formatNum(a), formatNum(b), sc.item);
-            answer = `${formatNum(a*b)}${sc.item[1]}`;
-            break;
-        }
-        case 'story_div': {
+            answer = `${formatNum(a * b)}${sc.item[1]}`;
+        } else if (subCategory.startsWith('div')) {
+            let a = 1, b = 1;
+            if (subCategory === 'div_1') {
+                b = rand(2, 9);
+                a = b * rand(2, 9);
+            } else if (subCategory === 'div_2') {
+                b = rand(10, 50);
+                a = b * rand(3, 15);
+            }
             let kind = rand(0, 1) === 0 ? "equal" : "contain";
             if (kind === "equal") {
-                let p = rand(3, 9);
-                let total = p * rand(3, 12);
                 let sc = pick(storyScenarios.div_equal);
                 icon = sc.icon;
-                story = sc.tpl(nameNun, formatNum(total), formatNum(p));
-                answer = `${formatNum(total/p)}개`;
+                story = sc.tpl(nameNun, formatNum(a), formatNum(b));
             } else {
-                let p2 = rand(3, 8);
-                let total = p2 * rand(5, 15);
                 let sc = pick(storyScenarios.div_contain);
                 icon = sc.icon;
-                story = sc.tpl(nameNun, formatNum(total), formatNum(p2));
-                answer = `${formatNum(total/p2)}개`;
+                story = sc.tpl(nameNun, formatNum(a), formatNum(b));
             }
-            break;
+            answer = `${formatNum(a / b)}개`;
         }
-        case 'story_time': {
-            icon = pick(["🕰️", "⏱️", "⏰"]);
-            if (rand(0, 1) === 0) {
-                let h1 = rand(1, 4), m1 = rand(5, 50);
-                let dur = rand(45, 150);
-                let t1_mins = h1 * 60 + m1;
-                let t2_mins = t1_mins + dur;
-                let sStr = `오후 ${h1}시 ${m1}분`;
-                let eH = Math.floor(t2_mins / 60);
-                let eM = t2_mins % 60;
-                let eStr = `오후 ${eH}시 ${eM}분`;
-                let dh = Math.floor(dur / 60);
-                let dm = dur % 60;
-                let durStr = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
-
-                let qType = rand(0, 2);
-                if (qType === 0) {
-                    let sc = pick(storyScenarios.time_duration);
-                    story = sc.tpl(nameNun, sStr, eStr);
-                    answer = durStr;
-                } else if (qType === 1) {
-                    let sc = pick(storyScenarios.time_start);
-                    story = sc.tpl(nameNun, durStr, eStr);
-                    answer = sStr;
-                } else {
-                    let sc = pick(storyScenarios.time_end);
-                    story = sc.tpl(nameNun, sStr, durStr);
-                    answer = eStr;
-                }
+    }
+    // frac_dec 카테고리
+    else if (category === 'frac_dec') {
+        if (subCategory === 'frac_add_sub') {
+            let den = rand(2, 10);
+            let n1 = rand(1, den - 1);
+            let n2 = rand(1, den - 1);
+            let isAdd = rand(0, 1) === 0;
+            if (!isAdd && n1 < n2) { let temp = n1; n1 = n2; n2 = temp; }
+            if (isAdd) {
+                let sc = pick(storyScenarios.frac_add);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, n1, n2, den);
+                let top = n1 + n2;
+                let ansStr = top === den ? "1" : `<sup>${top}</sup>&frasl;<sub>${den}</sub>`;
+                answer = `${ansStr}${sc.unit}`;
             } else {
-                let m1 = rand(65, 200);
-                let dh = Math.floor(m1 / 60);
-                let dm = m1 % 60;
-                let sc = pick(storyScenarios.time_convert);
-                story = sc.tpl(nameNun, m1);
-                answer = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
+                let sc = pick(storyScenarios.frac_sub);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, n1, n2, den);
+                let top = n1 - n2;
+                let ansStr = top === 0 ? "0" : `<sup>${top}</sup>&frasl;<sub>${den}</sub>`;
+                answer = `${ansStr}${sc.unit}`;
             }
-            break;
+        } else if (subCategory === 'dec_add_sub') {
+            let a = (rand(1, 99) / 10).toFixed(1);
+            let b = (rand(1, 99) / 10).toFixed(1);
+            let isAdd = rand(0, 1) === 0;
+            if (!isAdd && parseFloat(a) < parseFloat(b)) { let temp = a; a = b; b = temp; }
+            if (isAdd) {
+                let sc = pick(storyScenarios.dec_add);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, a, b);
+                answer = `${(parseFloat(a) + parseFloat(b)).toFixed(1)}${sc.unit}`;
+            } else {
+                let sc = pick(storyScenarios.dec_sub);
+                icon = sc.icon;
+                story = sc.tpl(nameNun, a, b);
+                answer = `${(parseFloat(a) - parseFloat(b)).toFixed(1)}${sc.unit}`;
+            }
+        } else if (subCategory === 'factor_multi') {
+            let num = rand(12, 100);
+            let sc = pick(storyScenarios.factor_multi);
+            icon = sc.icon;
+            story = sc.tpl(nameNun, num);
+            answer = `${getDivisors(num)}${sc.unit}`;
         }
-        case 'story_weight': {
+    }
+    // mixed 카테고리
+    else if (category === 'mixed') {
+        let init = rand(10, 30);
+        let plus = rand(20, 50);
+        let div = rand(3, 6);
+        let tempTarget = Math.floor((init + plus) / div);
+        let newPlus = (tempTarget * div) - init;
+        if (newPlus <= 0) newPlus += div * 3;
+        let ans = (init + newPlus) / div;
+        let sc = pick(storyScenarios.mixed);
+        icon = sc.icon;
+        story = sc.tpl(nameNun, init, newPlus, div);
+        answer = `${ans}개`;
+    }
+    // measure 카테고리
+    else if (category === 'measure') {
+        if (subCategory === 'time_calc') {
+            icon = pick(["⏰", "⏱️", "⏳"]);
+            let h1 = rand(1, 4), m1 = rand(5, 50);
+            let dur = rand(45, 150);
+            let t1_mins = h1 * 60 + m1;
+            let t2_mins = t1_mins + dur;
+            let sStr = `오후 ${h1}시 ${m1}분`;
+            let eH = Math.floor(t2_mins / 60);
+            let eM = t2_mins % 60;
+            let eStr = `오후 ${eH}시 ${eM}분`;
+            let dh = Math.floor(dur / 60);
+            let dm = dur % 60;
+            let durStr = dh > 0 ? `${dh}시간 ${dm}분` : `${dm}분`;
+
+            let qType = rand(0, 2);
+            if (qType === 0) {
+                let sc = pick(storyScenarios.time_duration);
+                story = sc.tpl(nameNun, sStr, eStr);
+                answer = durStr;
+            } else if (qType === 1) {
+                let sc = pick(storyScenarios.time_start);
+                story = sc.tpl(nameNun, durStr, eStr);
+                answer = sStr;
+            } else {
+                let sc = pick(storyScenarios.time_end);
+                story = sc.tpl(nameNun, sStr, durStr);
+                answer = eStr;
+            }
+        } else if (subCategory === 'weight_calc') {
             if (rand(0, 1) === 0) {
                 let w1 = rand(150, 950);
                 let w2 = rand(1500, 3500);
@@ -325,9 +422,7 @@ function generateStoryProblem(type) {
                 story = sc.tpl(nameGa, bagStr, bookStr);
                 answer = h > 0 ? `${h}kg ${g}g` : `${g}g`;
             }
-            break;
-        }
-        case 'story_len': {
+        } else if (subCategory === 'len_calc') {
             if (rand(0, 1) === 0) {
                 let len1 = rand(120, 350);
                 let len2 = rand(90, 250);
@@ -353,24 +448,8 @@ function generateStoryProblem(type) {
                 story = sc.tpl(nameNe, km, m, walked);
                 answer = left_km > 0 ? `${left_km}km ${left_m}m` : `${left_m}m`;
             }
-            break;
-        }
-        case 'story_mixed': {
-            let init = rand(10, 30);
-            let plus = rand(20, 50);
-            let div = rand(3, 6);
-            let tempTarget = Math.floor((init + plus) / div);
-            let newPlus = (tempTarget * div) - init;
-            if (newPlus <= 0) newPlus += div * 3;
-            let ans = (init + newPlus) / div;
-            let sc = pick(storyScenarios.mixed);
-            icon = sc.icon;
-            story = sc.tpl(nameNun, init, newPlus, div);
-            answer = `${ans}개`;
-            break;
-        }
-        case 'story_conv': {
-            icon = pick(["🔄", "🚀", "💡"]);
+        } else if (subCategory === 'unit_conv') {
+            icon = pick(["⚖️", "📏", "⏱️"]);
             let typ = rand(0, 2);
             if (typ === 0) {
                 let m = rand(80, 220);
@@ -394,28 +473,40 @@ function generateStoryProblem(type) {
                 story = sc.tpl(cm);
                 answer = `${m}m ${rem}cm`;
             }
-            break;
         }
     }
-    
+
     let exprHTML = `<div class="story-wrapper"><div class="story-icon">${icon}</div><div class="story-text">${story}</div></div>`;
     return { expr: exprHTML, ans: answer };
 }
 
 /* =========================================
    MAIN GENERATOR FUNCTION
-========================================= */
+ ========================================= */
 function generateMathProblems() {
   const category = categorySelect.value;
   const subCategory = subCategorySelect.value;
   const allowCarry = allowCarryOverCheckbox.checked;
   
+  // UI 모드 읽기
+  let selectedProbType = 'normal';
+  for (let i = 0; i < probTypeRadios.length; i++) {
+    if (probTypeRadios[i].checked) {
+      selectedProbType = probTypeRadios[i].value;
+      break;
+    }
+  }
+
   const problems = [];
   
   for (let i = 0; i < 10; i++) {
-    
-    if (category === 'story') {
-        problems.push(generateStoryProblem(subCategory));
+    let currentType = selectedProbType;
+    if (selectedProbType === 'mix') {
+      currentType = Math.random() > 0.5 ? 'normal' : 'story';
+    }
+
+    if (currentType === 'story') {
+        problems.push(generateStoryProblem(category, subCategory));
         continue;
     }
 
@@ -602,6 +693,87 @@ function generateMathProblems() {
           } catch(e) {}
        }
     }
+    else if (category === 'measure') {
+      if (subCategory === 'time_calc') {
+        let h1 = rand(1, 5), m1 = rand(5, 55);
+        let h2 = rand(1, 3), m2 = rand(5, 55);
+        let isAdd = rand(0, 1) === 0;
+        if (isAdd) {
+          expression = `${h1}시간 ${m1}분 + ${h2}시간 ${m2}분 = `;
+          let ansM = (h1 + h2) * 60 + (m1 + m2);
+          let ansH = Math.floor(ansM / 60);
+          let ansRem = ansM % 60;
+          answer = `${ansH}시간 ${ansRem}분`;
+        } else {
+          if (h1 < h2 || (h1 === h2 && m1 < m2)) {
+            let tH = h1; h1 = h2; h2 = tH;
+            let tM = m1; m1 = m2; m2 = tM;
+          }
+          expression = `${h1}시간 ${m1}분 - ${h2}시간 ${m2}분 = `;
+          let ansM = (h1 - h2) * 60 + (m1 - m2);
+          let ansH = Math.floor(ansM / 60);
+          let ansRem = ansM % 60;
+          answer = ansH > 0 ? `${ansH}시간 ${ansRem}분` : `${ansRem}분`;
+        }
+      } else if (subCategory === 'weight_calc') {
+        let kg1 = rand(1, 9), g1 = rand(50, 950);
+        let kg2 = rand(1, 5), g2 = rand(50, 950);
+        let isAdd = rand(0, 1) === 0;
+        if (isAdd) {
+          expression = `${kg1}kg ${g1}g + ${kg2}kg ${g2}g = `;
+          let ansG = (kg1 + kg2) * 1000 + (g1 + g2);
+          let ansKg = Math.floor(ansG / 1000);
+          let ansRem = ansG % 1000;
+          answer = `${ansKg}kg ${ansRem}g`;
+        } else {
+          if (kg1 < kg2 || (kg1 === kg2 && g1 < g2)) {
+            let tKg = kg1; kg1 = kg2; kg2 = tKg;
+            let tG = g1; g1 = g2; g2 = tG;
+          }
+          expression = `${kg1}kg ${g1}g - ${kg2}kg ${g2}g = `;
+          let ansG = (kg1 - kg2) * 1000 + (g1 - g2);
+          let ansKg = Math.floor(ansG / 1000);
+          let ansRem = ansG % 1000;
+          answer = ansKg > 0 ? `${ansKg}kg ${ansRem}g` : `${ansRem}g`;
+        }
+      } else if (subCategory === 'len_calc') {
+        let m1 = rand(1, 9), cm1 = rand(5, 95);
+        let m2 = rand(1, 5), cm2 = rand(5, 95);
+        let isAdd = rand(0, 1) === 0;
+        if (isAdd) {
+          expression = `${m1}m ${cm1}cm + ${m2}m ${cm2}cm = `;
+          let ansCm = (m1 + m2) * 100 + (cm1 + cm2);
+          let ansM = Math.floor(ansCm / 100);
+          let ansRem = ansCm % 100;
+          answer = `${ansM}m ${ansRem}cm`;
+        } else {
+          if (m1 < m2 || (m1 === m2 && cm1 < cm2)) {
+            let tM = m1; m1 = m2; m2 = tM;
+            let tCm = cm1; cm1 = cm2; cm2 = tCm;
+          }
+          expression = `${m1}m ${cm1}cm - ${m2}m ${cm2}cm = `;
+          let ansCm = (m1 - m2) * 100 + (cm1 - cm2);
+          let ansM = Math.floor(ansCm / 100);
+          let ansRem = ansCm % 100;
+          answer = ansM > 0 ? `${ansM}m ${ansRem}cm` : `${ansRem}cm`;
+        }
+      } else if (subCategory === 'unit_conv') {
+        let typ = rand(0, 2);
+        if (typ === 0) {
+          let m = rand(70, 290);
+          expression = `${m}분 = ( &nbsp;&nbsp;&nbsp; )시간 ( &nbsp;&nbsp;&nbsp; )분`;
+          answer = `${Math.floor(m/60)}시간 ${m%60}분`;
+        } else if (typ === 1) {
+          let g = rand(1100, 9900);
+          expression = `${g}g = ( &nbsp;&nbsp;&nbsp; )kg ( &nbsp;&nbsp;&nbsp; )g`;
+          answer = `${Math.floor(g/1000)}kg ${g%1000}g`;
+        } else {
+          let cm = rand(110, 990);
+          expression = `${cm}cm = ( &nbsp;&nbsp;&nbsp; )m ( &nbsp;&nbsp;&nbsp; )cm`;
+          answer = `${Math.floor(cm/100)}m ${cm%100}cm`;
+        }
+      }
+    }
 
     problems.push({ expr: expression, ans: answer, solution: solutionData });
   }
@@ -627,7 +799,7 @@ function generateMathProblems() {
     const calcSpace = document.createElement('div');
     calcSpace.className = 'calc-space';
     
-    if (category === 'story') {
+    if (selectedProbType === 'story' || (selectedProbType === 'mix' && prob.expr.includes('story-wrapper'))) {
         calcSpace.classList.add('lined');
     }
 
@@ -686,7 +858,6 @@ function captureElement(elementId, filename) {
   const el = document.getElementById(elementId);
   const originalStyle = el.style.transform;
   
-  // 캡처 시 화면 스크롤 영역에 의해 아래쪽이 잘리는 문제 방지
   const wrapper = document.querySelector('.worksheet-wrapper');
   const orgOverflow = wrapper.style.overflowY;
   wrapper.style.overflowY = 'visible';
@@ -704,7 +875,7 @@ function captureElement(elementId, filename) {
         link.click();
         
         el.style.transform = originalStyle;
-        wrapper.style.overflowY = orgOverflow; // 원래대로 복구
+        wrapper.style.overflowY = orgOverflow; // 원상복원
     });
   }, 150);
 }

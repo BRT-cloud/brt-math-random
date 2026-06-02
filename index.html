@@ -25,6 +25,24 @@
         <select id="subCategory"></select>
       </div>
 
+      <div class="control-group">
+        <label><strong>문제 형태</strong></label>
+        <div class="layout-options" style="display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="probType" value="normal" checked>
+            🔢 일반 연산형
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="probType" value="story">
+            📖 실생활 문장제
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="probType" value="mix">
+            🎲 무작위 혼합
+          </label>
+        </div>
+      </div>
+
       <div class="control-group checkbox-group" id="carryOverGroup" style="display: none;">
         <label>
           <input type="checkbox" id="allowCarryOver" checked>
